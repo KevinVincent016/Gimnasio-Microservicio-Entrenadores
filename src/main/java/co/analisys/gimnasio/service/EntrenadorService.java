@@ -19,4 +19,24 @@ public class EntrenadorService {
     public List<Entrenador> obtenerTodosEntrenadores() {
         return entrenadorRepository.findAll();
     }
+
+    public Entrenador obtenerEntrenadorPorId(Long id) {
+        return entrenadorRepository.findById(id).orElse(null);
+    }
+
+    public Entrenador actualizarEntrenador(Long id, Entrenador entrenadorActualizado) {
+        return entrenadorRepository.findById(id).map(entrenador -> {
+            entrenador.setNombre(entrenadorActualizado.getNombre());
+            entrenador.setEspecialidad(entrenadorActualizado.getEspecialidad());
+            return entrenadorRepository.save(entrenador);
+        }).orElse(null);
+    }
+
+    public boolean eliminarEntrenador(Long id) {
+        if (entrenadorRepository.existsById(id)) {
+            entrenadorRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 }
